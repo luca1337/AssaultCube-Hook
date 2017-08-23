@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="File di risorse">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{4e1b4476-17b0-446a-9076-ddeac6d699a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Signatures">
+      <UniqueIdentifier>{6f53f4ce-6e6d-4090-8b6d-5c5d1750be6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Menu">
+      <UniqueIdentifier>{ae113ca7-5f0f-4ef6-8456-7e02fdeddb81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{e1dd8561-2e61-4385-90ba-b89e98fdfbbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hooks">
+      <UniqueIdentifier>{711c77a4-6318-455f-bab1-dbc935589211}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HotKeys">
+      <UniqueIdentifier>{3ff6dad0-53b7-471a-9938-5224968c8d2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Functions">
+      <UniqueIdentifier>{a83b0bbc-01d8-43c4-ad56-a151ee80112a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Hooks.h">
+      <Filter>Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="HotKeys.h">
+      <Filter>HotKeys</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFunctions.h">
+      <Filter>Game Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderFunctions.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Signatures.h">
+      <Filter>Signatures</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hack.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Offsets.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="RegKey.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Hooks.cpp">
+      <Filter>Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="HotKeys.cpp">
+      <Filter>HotKeys</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFunctions.cpp">
+      <Filter>Game Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderFunctions.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Signatures.cpp">
+      <Filter>Signatures</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Hack.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="RegKey.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

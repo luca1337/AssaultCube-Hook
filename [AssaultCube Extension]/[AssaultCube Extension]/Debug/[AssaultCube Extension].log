@@ -1,0 +1,25 @@
+﻿  stdafx.cpp
+  dllmain.cpp
+  Utils.cpp
+c:\users\nb37\desktop\[assaultcube extension]\[assaultcube extension]\utils.cpp(30): warning C4018: '<': errata corrispondenza tra signed e unsigned
+c:\users\nb37\desktop\[assaultcube extension]\[assaultcube extension]\utils.cpp(43): warning C4018: '<': errata corrispondenza tra signed e unsigned
+  Signatures.cpp
+  RenderFunctions.cpp
+c:\users\nb37\desktop\[assaultcube extension]\[assaultcube extension]\renderfunctions.cpp(14): warning C4244: 'argomento': conversione da 'int' a 'GLfloat'. Possibile perdita di dati.
+c:\users\nb37\desktop\[assaultcube extension]\[assaultcube extension]\renderfunctions.cpp(15): warning C4244: 'argomento': conversione da 'int' a 'GLfloat'. Possibile perdita di dati.
+c:\users\nb37\desktop\[assaultcube extension]\[assaultcube extension]\renderfunctions.cpp(16): warning C4244: 'argomento': conversione da 'int' a 'GLfloat'. Possibile perdita di dati.
+c:\users\nb37\desktop\[assaultcube extension]\[assaultcube extension]\renderfunctions.cpp(17): warning C4244: 'argomento': conversione da 'int' a 'GLfloat'. Possibile perdita di dati.
+c:\users\nb37\desktop\[assaultcube extension]\[assaultcube extension]\renderfunctions.cpp(35): warning C4244: 'argomento': conversione da 'int' a 'GLfloat'. Possibile perdita di dati.
+c:\users\nb37\desktop\[assaultcube extension]\[assaultcube extension]\renderfunctions.cpp(36): warning C4244: 'argomento': conversione da 'int' a 'GLfloat'. Possibile perdita di dati.
+c:\users\nb37\desktop\[assaultcube extension]\[assaultcube extension]\renderfunctions.cpp(50): warning C4244: 'argomento': conversione da 'float' a 'int'. Possibile perdita di dati.
+  RegKey.cpp
+  Menu.cpp
+  HotKeys.cpp
+  Hooks.cpp
+  Hack.cpp
+c:\users\nb37\desktop\[assaultcube extension]\[assaultcube extension]\hack.cpp(86): warning C4018: '<': errata corrispondenza tra signed e unsigned
+  GameFunctions.cpp
+c:\users\nb37\desktop\[assaultcube extension]\[assaultcube extension]\gamefunctions.cpp(97): warning C4244: 'argomento': conversione da 'float' a 'int'. Possibile perdita di dati.
+  Generazione del codice in corso...
+  [AssaultCube Extension].vcxproj -> C:\Users\nb37\Desktop\[AssaultCube Extension]\Debug\[AssaultCube Extension].dll
+  [AssaultCube Extension].vcxproj -> C:\Users\nb37\Desktop\[AssaultCube Extension]\Debug\[AssaultCube Extension].pdb (Partial PDB)
