@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <Windows.h>
 
 #pragma region PATTERN_MASKS
 ////////////////////////////////////////////////PATTERN AND MASKS////////////////////////////////////
@@ -49,14 +50,22 @@ CMenu *g_Menu = nullptr;
 
 char buffer[1024];
 
+float screenX = GetSystemMetrics(SM_CXSCREEN);
+float screenY = GetSystemMetrics(SM_CYSCREEN);
+
+
 void OnHackSetup( )
 {
 	g_Menu = new CMenu( );
 
 	g_Menu->AddHack( new CHack( "No Damage", false ) );
 	g_Menu->AddHack( new CHack( "No Recoil", false ) );
+	g_Menu->AddHack( new CHack( "No Scope", false ) );
 	g_Menu->AddHack( new CHack( "Rapid Fire", false ) );
+	g_Menu->AddHack( new CHack( "Automatic Guns", false ) );
+	g_Menu->AddHack( new CHack( "Unlimited Ammo", false ) );
 	g_Menu->AddHack( new CHack( "Fly Mode", false ) );
+	g_Menu->AddHack( new CHack( "Player ESP", false ) );
 
 	GameFunctions::AddHudLine( "Hack Loaded!" );
 }
@@ -78,6 +87,18 @@ void OnHackSetup( CHack *pHack )
 	//Rapid Fire ? i don't know it seems rapid fire
 	if (!_stricmp( pHack->GetName( ), "Rapid Fire" ) )
 		GameFunctions::PatchRapidFire( pHack->GetEnabled( ) );
+
+	//No scope im sure =)
+	if(!_stricmp( pHack->GetName( ), "No Scope" ))
+		GameFunctions::NoScope( pHack->GetEnabled( ) );
+
+	//Auto guns + rapid fire. H4CK3D !
+	if(!_stricmp( pHack->GetName( ), "Automatic Guns" ))
+		GameFunctions::AutomaticGuns( pHack->GetEnabled( ) );
+
+	//Unlimited ammo
+	if(!_stricmp( pHack->GetName( ), "Unlimited Ammo" ) )
+		GameFunctions::UnlimitedAmmo( pHack->GetEnabled( ) );
 }
 
 void MenuInput( )
@@ -105,6 +126,29 @@ void MenuInput( )
 	}
 }
 
+void DrawESP(Player *pTargetPlayer, Player *pLocalPlayer)
+{
+	Vec3 vHeadPos = pTargetPlayer->m_HeadPos;
+	Vec3 vFootPos = pTargetPlayer->m_FootPos;
+
+	vHeadPos.z += 0.8F; //Regular head pos is not high enough
+
+	Vec3 vScreenHead, vScreenFoot;
+	if (GameFunctions::WorldToScreen(vHeadPos, &vScreenHead) && GameFunctions::WorldToScreen(vFootPos, &vScreenFoot))
+	{
+		float flHeight = abs(vScreenFoot.y - vScreenHead.y);
+		float flWidth = flHeight / 2.0F;
+
+		RenderFunctions::Color32 color = GameFunctions::IsVisible(pLocalPlayer->m_HeadPos, pTargetPlayer->m_HeadPos) ? RenderFunctions::Color32(1.0F, 1.0F, 0.0F, 1.0F) : RenderFunctions::Color32(1.0F, 0.0F, 0.0F, 1.0F);
+
+		DrawRect(vScreenHead.x - flWidth / 2, vScreenHead.y, vScreenHead.x + flWidth / 2, vScreenHead.y + flHeight, color, false);
+
+		DrawHealthBar(vScreenHead.x - flWidth / 2, vScreenHead.y - 14, flWidth, 6.0F, static_cast < float >( static_cast < float >( pTargetPlayer->m_Health ) / 100.0F ), RenderFunctions::Color32(0.0F, 1.0F, 0.0F, 1.0F));
+
+		GameFunctions::DrawString(vScreenFoot.x - flWidth / 2, vScreenFoot.y + 4, static_cast < int >( color.r * 255 ), static_cast < int >( color.g * 255 ), static_cast < int >( color.b * 255 ), pTargetPlayer->m_Name);
+	}
+}
+
 void OnRenderFrame( )
 {
 	if ( HotKeys::Press( 0x70 ) ) //F1
@@ -119,6 +163,8 @@ void OnRenderFrame( )
 	Game *pGame = Game::GetInstance( );
 
 	Player *pLocalPlayer = pGame->m_LocalPlayer;
+
+	Weapon *pLocalWeapon = pLocalPlayer->GetCurrentWeapon();
 	//Game hacks here 
 	//init pointer to Game
 	//get localplayer etc.. from here on
@@ -128,6 +174,48 @@ void OnRenderFrame( )
 
 	if( g_Menu->GetHack( "Fly Mode" )->GetEnabled(  ) )
 		pLocalPlayer->m_SpectateMode = SM_FLY;
+
+	if (GetAsyncKeyState( VK_F4 ) & 1)
+	{
+		Weapon::Info *pInfo = pLocalWeapon->m_Info;
+
+		pInfo->m_ReloadTime = 0.0f;
+		pInfo->m_Recoil = 0.0f;
+		pInfo->m_IsAuto = true;
+		pInfo->m_RecoilIncrease = 0.0f;
+		pInfo->m_MdlKickBack = 0.0f;
+		pInfo->m_ProjSpeed = 1000.0f;
+	}
+
+	if (g_Menu->GetHack("Player ESP")->GetEnabled())
+	{
+		for (int i = 0; i < pGame->m_PlayerCount; i++)
+		{
+			Player* pPlayer = pGame->GetPlayer(i);
+			if (!Utilss::IsValidPtr(pPlayer))
+				continue;
+
+			if (pPlayer == pLocalPlayer)
+				continue;
+
+			if (pPlayer->m_State != CS_ALIVE)
+				continue;
+
+			if (pPlayer->m_Health <= 0 || pPlayer->m_Health > 100)
+				continue;
+
+			if (pPlayer->m_HeadPos.x == 0 && pPlayer->m_HeadPos.y == 0 && pPlayer->m_HeadPos.z == 0)
+				continue;
+
+			if (GameFunctions::GotTeamMates())
+			{
+				if (pLocalPlayer->m_Team == pPlayer->m_Team) //No Teammates
+					continue;
+			}
+
+			DrawESP(pPlayer, pLocalPlayer);
+		}
+	}
 }
 
 void MenuRender()
@@ -165,8 +253,16 @@ void MenuRender()
 		c--;
 	if (HotKeys::Press(VK_F9))
 		d--;*/
-#pragma endregion 
+#pragma endregion
 
+	/*POINT p;
+
+	GetCursorPos(&p);
+
+	sprintf_s(buffer, "x: %.2f y: %.2f", screenX, screenY);
+
+	GameFunctions::DrawString( p.x, p.y, 255, 255, 0, buffer);*/
+	
 	DrawRect(316, 350, 17, 146, RenderFunctions::Color32(1, 0, 0, 0.35F), true);
 	GameFunctions::DrawString(MENUX, MENUY - 30, 255, 255, 255, "nb37's ACube xHookx v 1.0");
 

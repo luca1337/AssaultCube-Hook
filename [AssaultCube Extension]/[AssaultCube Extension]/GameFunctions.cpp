@@ -29,9 +29,33 @@ namespace GameFunctions
 	void PatchRapidFire(bool bRapidFire)
 	{
 		if(bRapidFire)
-			Utilss::MemoryEdit( reinterpret_cast< void * >( OFFSET_RAPIDFIRE ), reinterpret_cast< BYTE* >( pSigs->GetSignature( pSigs->RAPID_FIRE_OFF ) ), 2 );
+			Utilss::MemoryEdit( reinterpret_cast< void* >( OFFSET_RAPIDFIRE ), reinterpret_cast< BYTE* >( pSigs->GetSignature( pSigs->RAPID_FIRE_OFF ) ), 2 );
 		else
-			Utilss::MemoryEdit( reinterpret_cast< void * >( OFFSET_RAPIDFIRE ), reinterpret_cast< BYTE* >( pSigs->GetSignature( pSigs->RAPID_FIRE_ON ) ), 2 );
+			Utilss::MemoryEdit( reinterpret_cast< void* >( OFFSET_RAPIDFIRE ), reinterpret_cast< BYTE* >( pSigs->GetSignature( pSigs->RAPID_FIRE_ON ) ), 2 );
+	}
+
+	void NoScope( bool bNoScope )
+	{
+		if( bNoScope )
+			Utilss::MemoryEdit( reinterpret_cast< void* > ( OFFSET_NOSCOPE ), reinterpret_cast< BYTE* > ( pSigs->GetSignature( pSigs->NO_SCOPE_OFF ) ), 3 );
+		else
+			Utilss::MemoryEdit( reinterpret_cast< void* > ( OFFSET_NOSCOPE ), reinterpret_cast< BYTE* > ( pSigs->GetSignature( pSigs->NO_SCOPE_ON ) ), 3 );
+	}
+
+	void AutomaticGuns( bool bAutomatic )
+	{
+		if ( bAutomatic )
+			Utilss::MemoryEdit( reinterpret_cast< void* >( OFFSET_AUTOMATICGUN ), reinterpret_cast< BYTE* >( pSigs->GetSignature( pSigs->AUTOGUNS_ON ) ), 2 );
+		else
+			Utilss::MemoryEdit( reinterpret_cast< void* >( OFFSET_AUTOMATICGUN ), reinterpret_cast< BYTE* >( pSigs->GetSignature( pSigs->AUTOGUNS_OFF ) ), 2 );
+	}
+
+	void UnlimitedAmmo( bool bUnlimitedAmmo )
+	{
+		if (bUnlimitedAmmo)
+			Utilss::MemoryEdit( reinterpret_cast< void* >( OFFSET_AMMUNITIONS ), reinterpret_cast< BYTE* >( pSigs->GetSignature( pSigs->UNLIMITEDAMMO_ON ) ), 2 );
+		else
+			Utilss::MemoryEdit( reinterpret_cast< void* >( OFFSET_AMMUNITIONS ), reinterpret_cast< BYTE* >( pSigs->GetSignature( pSigs->UNLIMITEDAMMO_OFF) ), 2 );
 	}
 
 	void AddHudLine(char* pText)
@@ -40,6 +64,51 @@ namespace GameFunctions
 		thudoutf ohudoutf = reinterpret_cast< thudoutf >(OFFSET_HUDOUTF);
 
 		ohudoutf(pText);
+	}
+
+	bool GotTeamMates()
+	{
+		DWORD dwGameMode = *reinterpret_cast< DWORD* >(OFFSET_GAMEMODE);
+		return (
+			dwGameMode == GMODE_BOTTEAMONESHOTONKILL ||
+			dwGameMode == GMODE_TEAMONESHOTONEKILL ||
+			dwGameMode == GMODE_BOTTEAMDEATHMATCH ||
+			dwGameMode == GMODE_TEAMDEATHMATCH ||
+			dwGameMode == GMODE_TEAMSURVIVOR ||
+			dwGameMode == GMODE_TEAMLSS ||
+			dwGameMode == GMODE_CTF ||
+			dwGameMode == GMODE_TEAMKEEPTHEFLAG ||
+			dwGameMode == GMODE_HUNTTHEFLAG ||
+			dwGameMode == GMODE_TEAMPF ||
+			dwGameMode == GMODE_BOTTEAMSURVIVOR ||
+			dwGameMode == GMODE_BOTTEAMONESHOTONKILL
+			);
+	}
+
+	bool WorldToScreen(Vec3 vPos, Vec3 *pvOut)
+	{
+		ScreenSettings *pScreenSettings = ScreenSettings::GetInstance();
+		if (!Utilss::IsValidPtr(pScreenSettings))
+			return false;
+
+		glmatrixf *mvpmatrix = reinterpret_cast< glmatrixf* >(OFFSET_MVPMATRIX);
+
+		float mX = (float)pScreenSettings->m_Width / 2.0F;
+		float mY = (float)pScreenSettings->m_Height / 2.0F;
+
+		float x = mvpmatrix->transformx(vPos);
+		float y = mvpmatrix->transformy(vPos);
+		float z = mvpmatrix->transformz(vPos);
+		float w = mvpmatrix->transformw(vPos);
+
+		if (w < 0.01F)
+			return false;
+
+		pvOut->x = mX + (mX * x / w);
+		pvOut->y = mY - (mY * y / w);
+		pvOut->z = w;
+
+		return true;
 	}
 
 	void EngineDrawString(char *pText, int x, int y, int r, int g, int b, int pUnknown, int pUnknown2)

@@ -19,5 +19,10 @@
 #define OFFSET_PATCHARMOR			0x42CA58
 #define OFFSET_PATCHRECOIL          0x463786
 #define OFFSET_RAPIDFIRE            0x4637E4
+#define OFFSET_NOSCOPE              0x463D69
+#define OFFSET_AUTOMATICGUN		    0x463716
+#define OFFSET_AMMUNITIONS			0x4637E9
+#define OFFSET_MVPMATRIX            0x501AE8 //W2S
+#define OFFSET_GAMEMODE             0x50F49C
 
 #endif // !OFFSETS_H

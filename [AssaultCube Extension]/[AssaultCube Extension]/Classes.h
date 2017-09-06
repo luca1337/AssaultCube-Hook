@@ -185,6 +185,89 @@ public:
 	float w;
 };
 
+struct glmatrixf
+{
+	float v[16];
+
+	glmatrixf()
+	{
+	}
+
+	glmatrixf(float vals[16])
+	{
+		for (int i = 0; i < 16; i++)
+			v[i] = vals[i];
+	}
+
+#define MULMAT( row, col ) \
+	v[col + row] = x[row] * y[col] + x[row + 4] * y[col + 1] + x[row + 8] * y[col + 2] + x[row + 12] * y[col + 3];
+
+	template<class XT, class YT>
+	void mul(const XT x[16], const YT y[16])
+	{
+		MULMAT(0, 0); MULMAT(1, 0); MULMAT(2, 0); MULMAT(3, 0);
+		MULMAT(0, 4); MULMAT(1, 4); MULMAT(2, 4); MULMAT(3, 4);
+		MULMAT(0, 8); MULMAT(1, 8); MULMAT(2, 8); MULMAT(3, 8);
+		MULMAT(0, 12); MULMAT(1, 12); MULMAT(2, 12); MULMAT(3, 12);
+	}
+	/*
+	glmatrixf multiply( glmatrixf pMatrix )
+	{
+	float vals[16];
+
+	vals[0] = v[0] * pMatrix.v[0] + v[1] * pMatrix.v[4] + v
+
+
+	return *this;
+	}
+	*/
+
+	Vec4 multiplyVec4(Vec4 pVector)
+	{
+		return Vec4
+		(
+			pVector.x*v[0] + pVector.y*v[4] + pVector.z*v[8] + pVector.w*v[12],
+			pVector.x*v[1] + pVector.y*v[5] + pVector.z*v[9] + pVector.w*v[13],
+			pVector.x*v[2] + pVector.y*v[6] + pVector.z*v[10] + pVector.w*v[14],
+			pVector.x*v[3] + pVector.y*v[7] + pVector.z*v[11] + pVector.w*v[15]
+		);
+	}
+
+	float transformx(const Vec3 &p) const
+	{
+		return p.x*v[0] + p.y*v[4] + p.z*v[8] + v[12];
+	}
+
+	float transformy(const Vec3 &p) const
+	{
+		return p.x*v[1] + p.y*v[5] + p.z*v[9] + v[13];
+	}
+
+	float transformz(const Vec3 &p) const
+	{
+		return p.x*v[2] + p.y*v[6] + p.z*v[10] + v[14];
+	}
+
+	float transformw(const Vec3 &p) const
+	{
+		return p.x*v[3] + p.y*v[7] + p.z*v[11] + v[15];
+	}
+};
+
+struct sqr
+{
+	unsigned char type;
+	char floor, ceil;
+	unsigned char wtex, ftex, ctex;
+	unsigned char r, g, b;
+	unsigned char vdelta;
+	char defer;
+	char occluded;
+	unsigned char utex;
+	unsigned char tag;
+	unsigned char reserved[2];
+};
+
 namespace AssaultCube
 {
 	class Player;
@@ -423,13 +506,13 @@ namespace AssaultCube
 		DWORD* m_GameModes; //0x00F8 
 		char _0x00FC[68];
 
-		/*Player* GetPlayer( int index )
+		Player* GetPlayer( int index ) const
 		{
 			if( index < 0 )
-				return NULL;
+				return nullptr;
 
 			if( index > 32 )
-				return NULL;
+				return nullptr;
 
 			if( Utilss::IsValidPtr( this->m_OtherPlayers ) )
 			{
@@ -439,8 +522,8 @@ namespace AssaultCube
 				}
 			}
 
-			return NULL;
-		}*/
+			return nullptr;
+		}
 
 		static Game* GetInstance( )
 		{

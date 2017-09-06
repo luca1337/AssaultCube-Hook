@@ -14,13 +14,23 @@ namespace GameFunctions
 
 	void DrawString(int x, int y, int r, int g, int b, char *pText, ...);
 
+	bool WorldToScreen(Vec3 vPos, Vec3 *pvOut);
+
+	bool GotTeamMates();
+
 	void AddHudLine(char* pText);
 
 	void PatchDamage ( bool bDamage );
 
 	void PatchRecoil ( bool bDamage );
 
-	void PatchRapidFire(bool bRapidFire);
+	void PatchRapidFire ( bool bRapidFire );
+
+	void NoScope ( bool bNoScope );
+
+	void AutomaticGuns ( bool bAutomatic );
+
+	void UnlimitedAmmo ( bool bUnlimitedAmmo );
 }
 
 #endif //!GAMEFUNCTIONS_H
